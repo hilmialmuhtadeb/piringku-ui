@@ -1,15 +1,20 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Spinner from '../components/Spinner'
+import ActivitiesModal from '../components/ActivitiesModal'
 
 const Recommend = () => {
-  const [weight, setWeight] = React.useState(0)
-  const [height, setHeight] = React.useState(0)
-  const [age, setAge] = React.useState(0)
-  const [sex, setSex] = React.useState('L')
-  const [activity, setActivity] = React.useState('ringan')
-  const [food, setFood] = React.useState(null)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [weight, setWeight] = useState(0)
+  const [height, setHeight] = useState(0)
+  const [age, setAge] = useState(0)
+  const [sex, setSex] = useState('L')
+  const [activity, setActivity] = useState('ringan')
+  const [food, setFood] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const getRecommendationFoods = async () => {
     setFood(null)
@@ -69,7 +74,10 @@ const Recommend = () => {
             </select>
           </div>
           <div className="mb-4">
-            <label className='block mb-1 font-medium'>Aktivitas Fisik</label>
+            <label className='block mb-1 font-medium flex items-center'>
+              <p>Aktivitas Fisik</p>
+              <button onClick={openModal} className='ml-2 px-2 py-1 text-xs italic rounded-full bg-cyan-500 text-white'>info</button>
+            </label>
             <select className='w-full rounded' onChange={e => setActivity(e.target.value)}>
               <option value="ringan">Ringan</option>
               <option value="sedang">Sedang</option>
@@ -82,6 +90,7 @@ const Recommend = () => {
               onClick={getRecommendationFoods}
             >Dapatkan Rekomendasi</button>
           </div>
+          <ActivitiesModal isOpen={isModalOpen} onClose={closeModal} />
         </div>
       </div>
       { food && (
@@ -115,6 +124,7 @@ const Recommend = () => {
           </div>
         </div>
       )}
+      {/* <ActivityModal /> */}
     </div>
   )
 }
